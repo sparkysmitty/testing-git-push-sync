@@ -1,66 +1,28 @@
-// server.js
-// where your node app starts
+const port = 8000;
 
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
+var express = require('express'), app = express();
+var bodyParser = require('body-parser');
 
-const express = require("express");
-const bodyParser = require('body-parser');
-const crypto = require('crypto');
-const { execSync } = require('child_process');
+app.use(express.static(__dirname + '/public'));
 
-const app = express();
+app.use(bodyParser.urlencoded({
+   extended: false
+}));
+
 app.use(bodyParser.json());
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// make all the files in 'public' available
-app.use(express.static("public"));
-
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+app.get('/', function(req, res){
+  res.render('form');// if jade
+  // You should use one of line depending on type of frontend you are with
+  res.sendFile(__dirname + '/form.html'); //if html file is root directory
+ res.sendFile("index.html"); //if html file is within public directory
 });
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  response.json(dreams);
+app.post('/',function(req,res){
+   var username = req.body.username;
+   var htmlData = 'Hello:' + username; // + "<br><br>" + process.env.SECRET;
+   res.send(htmlData);
+   console.log(htmlData);
 });
 
-app.post('/git', (req, res) => {
-  
-  console.log("saw a post!")
-  
-  //const hmac = crypto.createHmac('sha1', process.env.SECRET);
-  //const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
-  //if (req.headers['x-github-event'] === 'push' &&
-  //  crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
-  //  res.sendStatus(200);
-  //  const commands = ['git fetch origin master',
-  //                    'git reset --hard origin/master',
-  //                    'git pull origin master --force',
-  //                    'npm install',
-  //                    // your build commands here
-  //                    'refresh']; // fixes glitch ui
-  //  for (const cmd of commands) {
-  //    console.log(execSync(cmd).toString());
-  //  }
-  //  console.log('updated with origin/master!');
-  //  return;
-  //} else {
-  //  console.log('webhook signature incorrect!');
-  //  return res.sendStatus(403);
-  //}
-  
-});
-
-
-// listen for requests :)
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
-});
-
+app.listen(port);
