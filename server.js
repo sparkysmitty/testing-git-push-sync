@@ -26,16 +26,23 @@ app.post('/git',function(req,res){
    //res.send(htmlData);
    //console.log(htmlData);
   
-  const hmac = crypto.createHmac('sha1', process.env.SECRET);
-  const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
-  if (req.headers['x-github-event'] === 'push' &&
-    crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
-    res.sendStatus(200);
-    return;
-  } else {
-    console.log('webhook signature incorrect: ' + Date.now() + " --" + req.headers['x-github-event']);
-    return res.sendStatus(403);
-  }  
+  // const hmac = crypto.createHmac('sha1', process.env.SECRET);
+  // const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+  
+  let theStuff = {requestBody: req.body}
+  console.log(theStuff)
+  res.send("OK")
+  
+  // res.send(res.json(theStuff))
+  
+  //if (req.headers['x-github-event'] === 'push' &&
+  //  crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
+  //  res.sendStatus(200);
+  //  return;
+  //} else {
+  //  console.log('webhook signature incorrect: ' + Date.now() + " --" + req.headers['x-github-event']);
+  //  return res.sendStatus(403);
+  //}  
     
 });
 
