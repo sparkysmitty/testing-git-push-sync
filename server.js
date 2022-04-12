@@ -1,6 +1,7 @@
 const port = 8000;
 let express = require('express'), app = express();
 let bodyParser = require('body-parser');
+const crypto = require('crypto');
 
 // app.use(express.static(__dirname + '/public'));
 
@@ -19,11 +20,23 @@ app.use(bodyParser.json());
   // res.send(htmlData)
 // });
 
-app.post('/',function(req,res){
-   let username = req.body.username;
-   let htmlData = 'Hello:' + username + "<br><br>" + process.env.SECRET
-   res.send(htmlData);
-   console.log(htmlData);
+app.post('/git',function(req,res){
+   //let username = req.body.username;
+   //let htmlData = 'Hello:' + username + "<br><br>" + process.env.SECRET
+   //res.send(htmlData);
+   //console.log(htmlData);
+  
+  const hmac = crypto.createHmac('sha1', process.env.SECRET);
+  const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+  if (req.headers['x-github-event'] === 'push' &&
+    crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
+    res.sendStatus(200);
+    return;
+  } else {
+    console.log('webhook signature incorrect: ' + Date.now() + " --" + req.headers['x-github-event']);
+    return res.sendStatus(403);
+  }  
+    
 });
 
 app.listen(port);
