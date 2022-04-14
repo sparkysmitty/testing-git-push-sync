@@ -30,7 +30,8 @@ app.post('/git',function(req,res){
   // const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
   
   let theStuff = {requestBody: req.body}
-  console.log(theStuff)
+  // console.log(theStuff)
+  console.log(reg.body)
   res.send("OK")
   
   // res.send(res.json(theStuff))
