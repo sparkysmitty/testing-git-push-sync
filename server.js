@@ -25,7 +25,7 @@ app.get('/', function(req, res){
 
 // for testing the concept of crypto
 app.post('/hook', function (req, res) {
- var signature = req.get('X-Signature', 'sha1=')
+ var signature = req.get('X-HOOK', 'sha1=')
  var bodyCrypted = require('crypto')
   .createHmac('sha1', 'SECRET83')
   .update(JSON.stringify(req.body))
