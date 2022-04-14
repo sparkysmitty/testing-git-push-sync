@@ -23,7 +23,8 @@ app.get('/', function(req, res){
   res.send(htmlData)
 })
 
-app.post("/git", function (req, res) {
+// for syncing with GitHub automatically...
+app.post("/sync", function (req, res) {
   //let username = req.body.username;
   //let htmlData = 'Hello:' + username + "<br><br>" + process.env.SECRET
   //res.send(htmlData);
