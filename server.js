@@ -37,6 +37,9 @@ app.post("/git", function (req, res) {
     // &&
     console.log("detected sync request...");
     res.sendStatus(200)
+  } else {
+    console.log("OK, processed")
+    res.sendStatus(200)
   }
   
   //  crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(req.headers['x-hub-signature']))) {
