@@ -23,14 +23,35 @@ app.get('/', function(req, res){
   res.send(htmlData)
 })
 
+// for testing the concept of crypto
+app.post('/hook', function (req, res) {
+ var signature = req.get('X-Signature', 'sha1=')
+ var bodyCrypted = require('crypto')
+  .createHmac('sha1', 'SECRET83')
+  .update(JSON.stringify(req.body))
+  .digest('hex')
+
+ if (bodyCrypted !== signature) {
+  console.log(bodyCrypted)
+  console.log(signature)
+  res.status(401).send()
+  return
+ }
+
+ console.log('Successful crypto analysis', JSON.stringify(req.body))
+ res.status(204).send()
+})
+
 // for syncing with GitHub automatically...
 app.post("/sync", function (req, res) {
   console.log(process.env.SECRET)
   //let username = req.body.username;
   //let htmlData = 'Hello:' + username + "<br><br>" + process.env.SECRET
   //res.send(htmlData);
-  // const hmac = crypto.createHmac('sha1', process.env.SECRET);
-  // const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+  const hmac = crypto.createHmac('sha1', process.env.SECRET);
+  console.log(hmac)
+  const sig  = 'sha1=' + hmac.update(JSON.stringify(req.body)).digest('hex');
+  
   // let theStuff = { requestBody: req.body };
   //  res.send("OK");
   // res.send(res.json(theStuff))
