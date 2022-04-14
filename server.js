@@ -25,6 +25,7 @@ app.get('/', function(req, res){
 
 // for syncing with GitHub automatically...
 app.post("/sync", function (req, res) {
+  console.log(process.env.SECRET)
   //let username = req.body.username;
   //let htmlData = 'Hello:' + username + "<br><br>" + process.env.SECRET
   //res.send(htmlData);
@@ -39,7 +40,7 @@ app.post("/sync", function (req, res) {
     console.log("detected sync request...");
     res.sendStatus(200)
   } else {
-    console.log("OK, processed")
+    console.log("Saw a post but it wasn't a push request.")
     res.sendStatus(200)
   }
   
