@@ -58,7 +58,7 @@ app.post("/sync", function (req, res) {
 
   if (req.headers["x-github-event"] === "push") {
     // &&
-    console.log("detected sync request...");
+    console.log("detected sync request #2.0...");
     res.sendStatus(200)
   } else {
     console.log("Saw a post but it wasn't a push request.")
